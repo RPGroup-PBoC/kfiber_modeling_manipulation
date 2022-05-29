@@ -195,69 +195,6 @@ def sampler_to_dataframe(sampler, columns=None):
     return df
 
 
-
-
-
-
-
-
-
-
-@numba.njit
-def interpolate_two_pt(x_out, x1, x2, y1, y2):
-    m = (y2-y1)/(x2-x1)
-    c = y1 - m*x1
-    y_out = m*x_out + c
-    return y_out
-
-@numba.njit
-def rotate(x, y, angle):
-    """
-    Gives the coordinates in a Cartesian reference frame that 
-    is rotated around the origin (0,0) in the clockwise direction 
-    by the specified amount.
-    
-    Parameters
-    ----------
-    x : float or numpy array
-        x-coordinates in the original reference frame.
-
-    y : float or numpy array
-        y-coordinates in the original reference frame.
-        
-    angle : float
-        The rotation angle in radians.
-        
-        
-    Returns
-    -------
-    x_rot : float or numpy array
-        x-coordinates in the rotated reference frame.
-    
-    y_rot : float or numpy array
-        y-coordinates in the rotated reference frame.
-    """
-    
-    x_rot =  x*np.cos(angle) + y*np.sin(angle)
-    y_rot = -x*np.sin(angle) + y*np.cos(angle)
-    
-    return x_rot, y_rot
-
-
-
-@numba.njit
-def min_axis1_jit(x):
-    n, m = x.shape
-    min_arr = np.zeros(n)
-    min_loc = np.zeros(n)
-    for i in range(n):
-        min_arr[i] = np.min(x[i,:])
-        for j in range(m):
-            if x[i,j] == min_arr[i]:
-                min_loc[i] = j
-                break
-    return min_arr, min_loc
-
 @numba.njit
 def distances_pair_min(x_points, y_points, x_curve, y_curve):
     """
@@ -296,3 +233,59 @@ def distances_pair_min(x_points, y_points, x_curve, y_curve):
     d_pairwise_min, ind_pairs = min_axis1_jit(d_pairwise_mat)
     
     return d_pairwise_min, ind_pairs
+
+
+@numba.njit
+def interpolate_two_pt(x_out, x1, x2, y1, y2):
+    """
+    Perform linear interpolation at `x_out` given two endpoint coordinates.
+    """
+    m = (y2-y1)/(x2-x1)
+    c = y1 - m*x1
+    y_out = m*x_out + c
+    return y_out
+
+
+
+
+
+
+
+
+
+
+
+
+
+@numba.njit
+def rotate(x, y, angle):
+    """
+    Gives the coordinates in a Cartesian reference frame that 
+    is rotated around the origin (0,0) in the clockwise direction 
+    by the specified amount.
+    
+    Parameters
+    ----------
+    x : float or numpy array
+        x-coordinates in the original reference frame.
+
+    y : float or numpy array
+        y-coordinates in the original reference frame.
+        
+    angle : float
+        The rotation angle in radians.
+        
+        
+    Returns
+    -------
+    x_rot : float or numpy array
+        x-coordinates in the rotated reference frame.
+    
+    y_rot : float or numpy array
+        y-coordinates in the rotated reference frame.
+    """
+    
+    x_rot =  x*np.cos(angle) + y*np.sin(angle)
+    y_rot = -x*np.sin(angle) + y*np.cos(angle)
+    
+    return x_rot, y_rot
