@@ -194,6 +194,18 @@ def sampler_to_dataframe(sampler, columns=None):
 
     return df
 
+@numba.njit
+def min_axis1_jit(x):
+    n, m = x.shape
+    min_arr = np.zeros(n)
+    min_loc = np.zeros(n)
+    for i in range(n):
+        min_arr[i] = np.min(x[i,:])
+        for j in range(m):
+            if x[i,j] == min_arr[i]:
+                min_loc[i] = j
+                break
+    return min_arr, min_loc
 
 @numba.njit
 def distances_pair_min(x_points, y_points, x_curve, y_curve):
