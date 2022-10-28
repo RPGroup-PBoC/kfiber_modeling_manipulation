@@ -1,7 +1,7 @@
-# Code used for analysis and figure generation
+# Modeling and mechanical perturbations reveal how spatially regulated anchorage gives rise to spatially distinct mechanics across the mammalian spindle
 
-Python code written in Jupyter notebooks is available to replicate the model findings and analysis performed in the different sections of the paper.
-Written and maintained by Vahe Galstyan and Pooja Suresh
+This is the repository containing the data and code used in preparing the publication\
+P. Suresh, V. Galstyan, R.P. Phillips, and S. Dumont (eLife 2022) DOI: https://doi.org/10.7554/eLife.79558
 
 
 ## License
